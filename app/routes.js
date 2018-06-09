@@ -42,12 +42,11 @@ module.exports = function(app){
 
 
     apiRoutes.use('/contractor', contractorRoutes);
-    contractorRoutes.get('/getContracts', requireAuth, AuthenticationController.roleAuthorization(['reader','creator','editor']), ContractorController.getContracts);
-    contractorRoutes.post('/createContract', requireAuth, AuthenticationController.roleAuthorization(['creator','editor']), ContractorController.createContract);
-    contractorRoutes.get('/delete/:contract_id', requireAuth, AuthenticationController.roleAuthorization(['editor']), ContractorController.deleteContract);
+    contractorRoutes.get('/getContracts',  ContractorController.getContracts);
+    contractorRoutes.post('/createContract',  ContractorController.createContract);
+    contractorRoutes.get('/delete/:contract_id',  ContractorController.deleteContract);
 
-    contractorRoutes.get('/detail/:contract_id', requireAuth, AuthenticationController.roleAuthorization(['reader','creator', 'editor']), ContractorController.getContract);
-    contractorRoutes.post('/getContractor/:contract_id', requireAuth, AuthenticationController.roleAuthorization(['creator', 'reader','editor']), ContractorController.getContract);
+    contractorRoutes.post('/getContract/:contract_id',  ContractorController.getContract);
 
     // Set up routes
     app.use('/api', apiRoutes);

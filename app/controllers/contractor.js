@@ -22,7 +22,7 @@ exports.createContract = function(req, res, next){
         contractowner : owner,
         depositaddress: req.body.depositaddress,
         parties: req.body.parties,
-        aggrement: req.body.aggrement,
+        aggrement: req.body.parties,
         details: req.body.details,
 
         done : false

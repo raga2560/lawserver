@@ -1,7 +1,16 @@
 var mongoose = require('mongoose');
+ 
+// https://stackoverflow.com/questions/23199482/create-unique-autoincrement-field-with-mongoose
+
+var CounterSchema = Schema({
+    _id: {type: String, required: true},
+    seq: { type: Number, default: 0 }
+});
+var counter = mongoose.model('counter', CounterSchema);
+
 
 var PartySchema = new mongoose.Schema({
-
+        countvalue: { type: String },
 	partyid: {
 		type: String,
 		unique: true,
@@ -13,6 +22,10 @@ var PartySchema = new mongoose.Schema({
 	},
 	userdetails: {
 		type: mongoose.Schema.Types.Mixed,
+		required: true
+	},
+	dealertype: {
+		type: String,  // realestate, company, 
 		required: true
 	},
 	profession: {
@@ -31,9 +44,17 @@ var PartySchema = new mongoose.Schema({
 
 PartySchema.pre('save', function(next){
 
-	var user = this;
+	var doc = this;
 
 		return next();
+  counter.findByIdAndUpdate({_id: 'entityId'}, {$inc: { seq: 1} }, 
+      function(error, counter)   {
+        if(error)
+            return next(error);
+        doc.countvalue = counter.seq;
+        doc.partyid = counter.seq;
+        next();
+    });
 
 
 });
