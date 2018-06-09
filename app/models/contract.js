@@ -17,6 +17,11 @@ var ContractSchema = new mongoose.Schema({
 		unique: true,
                 required: true
 	},
+        contractaddress: {
+		type: String,
+		unique: true,
+                required: true
+	},
 	details: {
 		type: mongoose.Schema.Types.Mixed,
 
