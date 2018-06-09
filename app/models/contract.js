@@ -2,18 +2,31 @@ var mongoose = require('mongoose');
 
 var ContractSchema = new mongoose.Schema({
 
-        contractadmin: {
+        contractid: {
 		type: String,
 		unique: true,
                 required: true
 	},
+        contractowner: {
+		type: String, // will have userid or new partyid
+		unique: true,
+                required: true
+	},
+        depositaddress: {
+		type: String,
+		unique: true,
+                required: true
+	},
+	details: {
+		type: mongoose.Schema.Types.Mixed,
+
+	},
 	parties: {
-		type: Array
+		type: Array  // name and accounts
 	},
 	amount: {
 		type: Number,
 		default: 0,
-                required: true
 	},
 	aggrement: {
 		type: Array,  // {accountid, name, percentage, fixed}

@@ -1,4 +1,5 @@
 var request = require('request')
+var Account = require('../models/accounts')
 var contract = require('../../config/contract.json')
 
 // get address info
@@ -25,6 +26,7 @@ function getApi(api_endpoint, param, callback) {
     })
 }
 
+
 exports.bitCoinSettle = function (contract,amount,  callback) {
   // do bitcoin transaction and update  mongodb, also give tx number for each update
 
@@ -45,5 +47,16 @@ exports.bitCoinSettle = function (contract,amount,  callback) {
 
 exports.rawSettle = function (contract,amount,  callback) {
   // update accounts in mongodb, also give tx number for each update
+  var data = {
+      txid: 'ahahah',
+      status: 'success' 
+  };
+ 
+  //update multiple accounts 
 
+  // have flag in transit
+  // update all when done
+
+
+   
 }

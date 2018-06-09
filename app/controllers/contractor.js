@@ -1,43 +1,90 @@
-var request = require('request')
-var contract = require('../../config/contract.json')
+var Contract = require('../models/contract');
 
-// get address info
-var address = '2N43g2SV2PRp3FJUZ92NHDYY36QckV6mSP9'
-//var url = 'https://live.blockcypher.com/btc-testnet/address/';
-var url = contract.contractorurl;
+exports.getContracts = function(req, res, next){
 
-function getApi(api_endpoint, param, callback) {
-    console.log('Get from:'+api_endpoint+'/'+param)
-    console.log(url);    
-    var vendordata = {
-        vendorid: contract.vendorid
-    };
-    request.post(url + '/api/relation/createRelation', JSON.stringify(vendordata), function (error, response, body) {
-        if (error) {
-            return callback(error)
+    Contract.find(function(err, coupons) {
+
+        if (err){
+        	res.send(err);
         }
-        if (typeof body === 'string') {
-            //body = JSON.parse(body)
-        }
-        console.log('Status:', response.statusCode)
-        console.log('Body:', body)
-        return callback(null, body)
-    })
+
+        res.json(coupons);
+
+    });
+
 }
 
-exports.getPair = function (vendordata, callback) {
+exports.createContract = function(req, res, next){
+    var owner = req.user;
+    var length = 5;
+    Contract.create({
+        contractid : 'contract_'+Math.random().toString(36).substr(2, length),
+        contractowner : owner,
+        depositaddress: req.body.depositaddress,
+        parties: req.body.parties,
+        aggrement: req.body.aggrement,
+        details: req.body.details,
 
-        getApi("addr", "agag", function(err, body) {
+        done : false
+    }, function(err, coupon) {
 
-        if (err) {
+        if (err){
+        	res.send(err);
+        }
+       
+        Contract.find(function(err, coupons) {
 
-		console.log('error: ', err)
-                callback(err, null);
-         }
-         else {
+            if (err){
+            	res.send(err);
+            }
+                
+            res.json(coupons);
 
-
-               callback(null, body)
-         }
         });
+
+    });
+
 }
+
+exports.deleteContract = function(req, res, next){
+
+    Contract.remove({
+        _id : req.params.coupon_id
+    }, function(err, coupon) {
+        res.json(coupon);
+    });
+
+}
+
+exports.activateContract = function(req, res, next){
+
+    Contract.update({
+        _id : req.params.coupon_id
+    }, function(err, coupon) {
+        res.json(coupon);
+    });
+
+}
+exports.contractExecute = function(req, res, next){
+
+    Contract.update({
+        _id : req.params.coupon_id
+    }, function(err, coupon) {
+        res.json(coupon);
+    });
+
+}
+
+
+exports.getContract = function(req, res, next){
+
+    Contract.find({
+        _id : req.params.coupon_id
+    }, function(err, coupon) {
+        if (err){
+                res.send(err);
+        }
+        res.json(coupon);
+    });
+}
+
