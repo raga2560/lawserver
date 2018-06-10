@@ -1,4 +1,5 @@
 var Contract = require('../models/contract');
+var Transactor = require('./transactor');
 
 exports.getContracts = function(req, res, next){
 
@@ -23,6 +24,7 @@ exports.createContract = function(req, res, next){
         depositaddress: req.body.depositaddress,
         contractaddress: 'placeforbitcoinaddress', 
         parties: req.body.parties,
+        settlementid: '',
         aggrement: req.body.parties,
         details: req.body.details,
 
@@ -52,28 +54,25 @@ exports.createContract = function(req, res, next){
 exports.deleteContract = function(req, res, next){
 
     Contract.remove({
-        _id : req.params.contract_id
+        contractid : req.body.contractid
     }, function(err, contract) {
         res.json(contract);
     });
 
 }
 
-exports.activateContract = function(req, res, next){
+exports.executeContract = function(req, res){
+    var contract = req.body.contract;
+    var amount = Number(req.body.amount);
+    console.log(contract); 
+
+    Transactor.rawSettle(contract, amount, function (err, data) {
 
     Contract.update({
-        _id : req.params.contract_id
-    }, function(err, contract) {
-        res.json(contract);
+        contractid : contract.contractid
+    },{$set: {settlementid:data.txid, amount: amount}},  function(err, newcontract) {
+        res.json(newcontract);
     });
-
-}
-exports.contractExecute = function(req, res, next){
-
-    Contract.update({
-        _id : req.params.contract_id
-    }, function(err, contract) {
-        res.json(contract);
     });
 
 }
@@ -82,7 +81,7 @@ exports.contractExecute = function(req, res, next){
 exports.getContract = function(req, res, next){
 
     Contract.find({
-        _id : req.params.contract_id
+        contractid : req.body.contractid
     }, function(err, contract) {
         if (err){
                 res.send(err);

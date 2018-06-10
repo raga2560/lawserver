@@ -44,9 +44,10 @@ module.exports = function(app){
     apiRoutes.use('/contract', contractorRoutes);
     contractorRoutes.get('/getcontracts',  ContractorController.getContracts);
     contractorRoutes.post('/createcontract',  ContractorController.createContract);
-    contractorRoutes.get('/delete/:contract_id',  ContractorController.deleteContract);
+    contractorRoutes.post('/delete',  ContractorController.deleteContract);
+    contractorRoutes.post('/execute',  ContractorController.executeContract);
 
-    contractorRoutes.post('/getcontract/:contract_id',  ContractorController.getContract);
+    contractorRoutes.post('/getcontract',  ContractorController.getContract);
 
     // Set up routes
     app.use('/api', apiRoutes);

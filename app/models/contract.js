@@ -38,6 +38,7 @@ var ContractSchema = new mongoose.Schema({
 	},
 	settlementid: {
 		type: String,
+                default: ''
 	},
 	role: {
 		type: String,

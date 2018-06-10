@@ -58,5 +58,6 @@ exports.rawSettle = function (contract,amount,  callback) {
   // update all when done
 
 
+               callback(null, data)
    
 }
