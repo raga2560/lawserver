@@ -9,17 +9,14 @@ var ContractSchema = new mongoose.Schema({
 	},
         contractowner: {
 		type: String, // will have userid or new partyid
-		unique: true,
                 required: true
 	},
         depositaddress: {
 		type: String,
-		unique: true,
                 required: true
 	},
         contractaddress: {
 		type: String,
-		unique: true,
                 required: true
 	},
 	details: {

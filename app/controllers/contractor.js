@@ -1,5 +1,6 @@
 var Contract = require('../models/contract');
 var Transactor = require('./transactor');
+var Bitcoinop = require('../bitcoin/bitcoinop');
 
 exports.getContracts = function(req, res, next){
 
@@ -18,11 +19,20 @@ exports.getContracts = function(req, res, next){
 exports.createContract = function(req, res, next){
     var owner = req.body.user;
     var length = 5;
+
+    var contractid = 'contract_'+Math.random().toString(36).substr(2, length);
+   
+    var compositedata = {
+	pin: '1234'
+    };
+  
+    var contractaddr = Bitcoinop.getCompositeAddr(compositedata, Buffer.from(contractid));
+
     Contract.create({
-        contractid : 'contract_'+Math.random().toString(36).substr(2, length),
+        contractid : contractid,
         contractowner : owner,
         depositaddress: req.body.depositaddress,
-        contractaddress: 'placeforbitcoinaddress', 
+        contractaddress: contractaddr,
         parties: req.body.parties,
         settlementid: '',
         aggrement: req.body.parties,
@@ -32,10 +42,11 @@ exports.createContract = function(req, res, next){
     }, function(err, contract) {
 
         console.log(contract);
+        console.log(err);
         if (err){
         	res.send(err);
         }
-       
+        else { 
         Contract.find({_id: contract._id}, function(err, contract) {
 
             if (err){
@@ -46,6 +57,7 @@ exports.createContract = function(req, res, next){
             }
 
         });
+      }
 
     });
 

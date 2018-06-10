@@ -28,6 +28,10 @@ var PartySchema = new mongoose.Schema({
 		type: String,  // realestate, company, 
 		required: true
 	},
+	partyaddress: {
+		type: String,  // realestate, company, 
+		required: true
+	},
 	profession: {
 		type: String,  // dealer, consumer
 		required: true
